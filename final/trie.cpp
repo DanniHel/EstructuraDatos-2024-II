@@ -82,7 +82,6 @@ void imprimir_trie(NodoTrie* raiz, string palabra) {
 // Modificamos la función imprimir_trie para buscar y mostrar información desde la tabla hash
 void imprimir_trie_mas(NodoTrie* raiz, string palabra, TablaHash& tablaHash) {
     if (raiz == nullptr) return;
-
     // Si es un nodo hoja, significa que hemos encontrado una palabra completa
     if (raiz->es_hoja) {
         try {

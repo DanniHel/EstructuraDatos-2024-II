@@ -5,11 +5,12 @@ using namespace std;
 
 
 void menu_principal(){
+    cout<<endl;
     cout<<"____________Menu____________"<<endl;
     cout<<"1. Cargar datos a la estructura"<<endl;
     cout<<"2. Listar todas las musicas"<<endl;
     cout<<"3. Buscar por nombre en todo"<<endl;
-    cout<<"4. Salir"<<endl;
+    cout<<"4. Salir"<<endl<<endl;
 
     cout<<"Elige una opcion: ";
 }
@@ -34,7 +35,7 @@ int main() {
         switch (opcion){
         case 1:
             {
-            cout<<"Procesando archivo| "<<nombreArchivo<<endl;
+            cout<<"Procesando archivo| "<<nombreArchivo<<endl<<endl;
             // Cargar datos desde el archivo CSV para tabla HAHS
             cargarDatosDesdeArchivo(nombreArchivo, tablaHash);
             int cont1=0;
@@ -75,12 +76,13 @@ int main() {
                 string prefijo;
                 cout << "Ingrese un prefijo para buscar canciones: ";
                 cin >> prefijo;
-                cout << "Canciones que comienzan con '" << prefijo << "': \n";
+                cout<<endl;
+                cout << "Canciones que comienzan con -|> '" << prefijo << "': \n";
+                cout<<endl;
                 buscar_por_prefijo(raiz, prefijo, tablaHash);
 
-                cout<<endl;
-                cout<<".Seguir Buscando? 1.(si), 0.(no): ";
-
+                cout<<endl<<endl;
+                cout<<"Continuar buscando? (1/0): ";
                 cin >> key_2;
             }
             }
