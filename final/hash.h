@@ -48,7 +48,7 @@ public:
     TablaHash(int tamanio);
 
     // Función para insertar un par clave-valor
-    void insertar(string idCancion, Cancion cancion);
+    void insertar(string idCancion, Cancion cancion, int &num2);
 
     // Función para buscar la canción por su idCancion
     Cancion buscar(string idCancion);

@@ -40,7 +40,7 @@ int obtener_indice_char(char c) {
 }
 
 // Inserta una palabra en el Trie y guarda el track_id
-NodoTrie* insertar_palabra(NodoTrie* raiz, const string& palabra, const string& track_id) {
+NodoTrie* insertar_palabra(NodoTrie* raiz, const string& palabra, const string& track_id, int& cont1) {
     if (raiz == nullptr) {
         raiz = crear_nodo_trie('\0');  // Crear la raíz si no existe
     }
@@ -58,7 +58,7 @@ NodoTrie* insertar_palabra(NodoTrie* raiz, const string& palabra, const string& 
     }
     actual->es_hoja = true;  // Marcar el nodo como un nodo hoja (palabra completa)
     actual->track_id = track_id;  // Asignar el track_id en el nodo hoja
-
+    cont1++;
     return raiz;
 }
 
@@ -134,7 +134,7 @@ void buscar_por_prefijo(NodoTrie* raiz, const string& prefijo, TablaHash& tablaH
 }
 
 // Función para leer el archivo CSV y procesar las canciones
-NodoTrie* procesar_archivo(const string& archivo, NodoTrie* raiz) {
+NodoTrie* procesar_archivo(const string& archivo, NodoTrie* raiz,int& cont1, int& cont2) {
     ifstream file(archivo);
     string line;
 
@@ -147,41 +147,44 @@ NodoTrie* procesar_archivo(const string& archivo, NodoTrie* raiz) {
     getline(file, line);
 
     // Procesar cada línea del archivo
+
     while (getline(file, line)) {
         stringstream ss(line);
-        string n, artist_name, track_name, track_id, popularity, year, genre;
-        string danceability, energy, key, loudness, mode, speechiness, acousticness;
-        string instrumentalness, liveness, valence, tempo, duration_ms, time_signature;
+        string simbolo;
+        string artista, track_name, track_id, genero;
+        int id, popularidad, anio, clave, modo, duracion, firmaTiempo; //stoi() ----> convierte a int
+        float danceabilidad, energia, volumen, discurso, acustica, instrumentalidad, vivacidad, valencia, tempo;// stof() - convierte a float
 
-        // Leer los campos del CSV separados por comas
-        getline(ss, n, ',');
-        getline(ss, artist_name, ',');
-        getline(ss, track_name, ',');
-        getline(ss, track_id, ',');
-        getline(ss, popularity, ',');
-        getline(ss, year, ',');
-        getline(ss, genre, ',');
-        getline(ss, danceability, ',');
-        getline(ss, energy, ',');
-        getline(ss, key, ',');
-        getline(ss, loudness, ',');
-        getline(ss, mode, ',');
-        getline(ss, speechiness, ',');
-        getline(ss, acousticness, ',');
-        getline(ss, instrumentalness, ',');
-        getline(ss, liveness, ',');
-        getline(ss, valence, ',');
-        getline(ss, tempo, ',');
-        getline(ss, duration_ms, ',');
-        getline(ss, time_signature, ',');
+        try {
+            // Extraemos los datos de la línea
+            getline(ss, simbolo, ','); id = stoi(simbolo);  // id
+            getline(ss, artista, ',');  // artista
+            getline(ss, track_name, ',');  // track_name
+            getline(ss, track_id, ',');  // track_id
+            getline(ss, simbolo, ','); popularidad = stoi(simbolo);  // popularity
+            getline(ss, simbolo, ','); anio = stoi(simbolo);  // year
+            getline(ss, genero, ',');  // genre
+            getline(ss, simbolo, ','); danceabilidad = stof(simbolo);  // danceability
+            getline(ss, simbolo, ','); energia = stof(simbolo);  // energy
+            getline(ss, simbolo, ','); clave = stoi(simbolo);  // key
+            getline(ss, simbolo, ','); volumen = stof(simbolo);  // loudness
+            getline(ss, simbolo, ','); modo = stoi(simbolo);  // mode
+            getline(ss, simbolo, ','); discurso = stof(simbolo);  // speechiness
+            getline(ss, simbolo, ','); acustica = stof(simbolo);  // acousticness
+            getline(ss, simbolo, ','); instrumentalidad = stof(simbolo);  // instrumentalness
+            getline(ss, simbolo, ','); vivacidad = stof(simbolo);  // liveness
+            getline(ss, simbolo, ','); valencia = stof(simbolo);  // valence
+            getline(ss, simbolo, ','); tempo = stof(simbolo);  // tempo
+            getline(ss, simbolo, ','); duracion = stoi(simbolo);  // duration_ms
+            getline(ss, simbolo, ','); firmaTiempo = stoi(simbolo);  // time_signature
 
-        // Si el nombre de la canción está vacío o es inválido, continuar
-        if (track_name.empty() || track_name == "track_name") {
-            continue;
+            // Insertar la canción en el Trie junto con su track_id
+            raiz = insertar_palabra(raiz, track_name, track_id, cont1);
+
+        } catch (const exception& e) {
+            cont2++;
+            //cerr << "Error al procesar la línea: " << linea << endl;
         }
-
-        // Insertar la canción en el Trie junto con su track_id
-        raiz = insertar_palabra(raiz, track_name, track_id);
     }
 
     file.close();

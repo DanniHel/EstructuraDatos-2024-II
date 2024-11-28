@@ -16,9 +16,10 @@ TablaHash::TablaHash(int tamanio) {
 }
 
 // Función para insertar un par clave-valor
-void TablaHash::insertar(string idCancion, Cancion cancion) {
+void TablaHash::insertar(string idCancion, Cancion cancion,int &num2) {
     int indice = funcionHash(idCancion);  // Obtiene el índice en la tabla
     tabla[indice].push_back(make_pair(idCancion, cancion));  // Inserta el par (idCancion, cancion)
+    num2++;
 }
 
 // Función para buscar la canción por su idCancion
@@ -61,8 +62,8 @@ void cargarDatosDesdeArchivo(string nombreArchivo, TablaHash& tablaHash) {
     // Ignorar la primera línea (cabecera)
     getline(archivo, linea);
 
-    int num = 0; // Contar errores al cargar líneas
-
+    int num1 = 0; // Contar errores al cargar líneas
+    int num2 = 0; // procesados correctamente
     // Leer cada línea del archivo y procesarla
     while (getline(archivo, linea)) {
         stringstream ss(linea);
@@ -93,13 +94,14 @@ void cargarDatosDesdeArchivo(string nombreArchivo, TablaHash& tablaHash) {
             getline(ss, token, ','); cancion.firmaTiempo = stoi(token);  // time_signature
 
             // Insertar la canción en la tabla hash
-            tablaHash.insertar(cancion.idCancion, cancion);
+            tablaHash.insertar(cancion.idCancion, cancion, num2);
 
         } catch (const exception& e) {
-            num++;
+            num1++;
             //cerr << "Error al procesar la línea: " << linea << endl;
         }
     }
 
-    cout << "Líneas omitidas (" << num << ")" << endl;
+    cout << "HASH: Lineas Procesadas (" << num2 << ") - ";
+    cout << "Lineas omitidas (" << num1 <<")" << endl;
 }

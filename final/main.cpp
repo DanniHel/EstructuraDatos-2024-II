@@ -30,12 +30,19 @@ int main() {
     while(key==0){
         menu_principal();
         cin >> opcion;
+        cout<<endl;
         switch (opcion){
         case 1:
+            {
+            cout<<"Procesando archivo| "<<nombreArchivo<<endl;
             // Cargar datos desde el archivo CSV para tabla HAHS
             cargarDatosDesdeArchivo(nombreArchivo, tablaHash);
+            int cont1=0;
+            int cont2=0;
             // Procesar el archivo CSV y cargar las canciones en el Trie
-            raiz = procesar_archivo(nombreArchivo, raiz);
+            raiz = procesar_archivo(nombreArchivo, raiz, cont1, cont2);
+            cout<<"TRIE: Lineas Procesadas ("<<cont1<<") - lineas omitidas ("<<cont2<<")"<<endl;
+            }
             break;
 
         case 2:
