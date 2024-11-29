@@ -80,10 +80,15 @@ void imprimir_trie(NodoTrie* raiz, string palabra) {
 }
 //¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
 // Modificamos la función imprimir_trie para buscar y mostrar información desde la tabla hash
+
 void imprimir_trie_mas(NodoTrie* raiz, string palabra, TablaHash& tablaHash) {
-    if (raiz == nullptr) return;
+    //int num=0;
+    if (raiz == nullptr) {
+        return;
+    }
     // Si es un nodo hoja, significa que hemos encontrado una palabra completa
     if (raiz->es_hoja) {
+
         try {
             // Usamos el track_id del nodo para buscar la canción en la tabla hash
             Cancion cancion = tablaHash.buscar(raiz->track_id);
@@ -98,6 +103,7 @@ void imprimir_trie_mas(NodoTrie* raiz, string palabra, TablaHash& tablaHash) {
             cout << "Tempo: " << cancion.tempo << ", Clave: " << cancion.clave << endl;
             cout << "Volumen: " << cancion.volumen << ", Modo: " << cancion.modo << endl;
             cout << endl;
+            cout<<"num"<<numm++;
         } catch (const runtime_error& e) {
             cout << "Error al recuperar la canción con Track ID: " << raiz->track_id << endl;
         }
@@ -127,7 +133,7 @@ void buscar_por_prefijo(NodoTrie* raiz, const string& prefijo, TablaHash& tablaH
             actual = actual->hijos[indice];
         }
     }
-
+    int num;
     // Si encontramos el nodo correspondiente al prefijo, imprimir todas las palabras que empiezan con él
     imprimir_trie_mas(actual, prefijo, tablaHash);
 }
