@@ -45,12 +45,12 @@ void eliminarPorID(int id) {
             else cola = actual->anterior;
 
             delete actual;
-            cout << "Canción con ID " << id << " eliminada.\n";
+            cout << "Cancion con ID " << id << " eliminada.\n";
             return;
         }
         actual = actual->siguiente;
     }
-    cout << "No se encontró una canción con ID " << id << ".\n";
+    cout << "No se encontro una cancion con ID " << id << ".\n";
 }
 
 void eliminarPorNombre(const string& nombre) {
@@ -81,7 +81,7 @@ void eliminarPorNombre(const string& nombre) {
 
 void mostrarLista() {
     if (!cabeza) {
-        cout << "La lista de canciones está vacía.\n";
+        cout << "La lista de canciones está vacia.\n";
         return;
     }
     Nodo* actual = cabeza;
@@ -120,9 +120,9 @@ void ordenarPorCriterio(const string& criterio) {
 void buscarPorNombre(const string& nombre, bool& hay) {
     Nodo* actual = cabeza;
     bool encontrado = false;
-    cout << "Resultados de búsqueda para el nombre de canción \"" << nombre << "\":\n";
-    cout << left << setw(5) << "ID" << setw(20) << "Artista" << setw(25) << "Nombre de la canción"
-         << setw(15) << "Popularidad" << setw(10) << "Año" << setw(15) << "Género" << setw(10) << "Duración" << endl;
+    cout << "Resultados de busqueda para el nombre de cancion \"" << nombre << "\":\n";
+    cout << left << setw(5) << "ID" << setw(20) << "Artista" << setw(25) << "Nombre de la cancion"
+         << setw(15) << "Popularidad" << setw(10) << "Anio" << setw(15) << "Genero" << setw(10) << "Duracion" << endl;
     cout << string(100, '-') << endl;
 
     while (actual) {
@@ -138,9 +138,9 @@ void buscarPorNombre(const string& nombre, bool& hay) {
 void buscarPorArtista(const string& artista, bool& hay) {
     Nodo* actual = cabeza;
     bool encontrado = false;
-    cout << "Resultados de búsqueda para el artista \"" << artista << "\":\n";
-    cout << left << setw(5) << "ID" << setw(20) << "Artista" << setw(25) << "Nombre de la canción"
-         << setw(15) << "Popularidad" << setw(10) << "Año" << setw(15) << "Género" << setw(10) << "Duración" << endl;
+    cout << "Resultados de busqueda para el artista \"" << artista << "\":\n";
+    cout << left << setw(5) << "ID" << setw(20) << "Artista" << setw(25) << "Nombre de la cancion"
+         << setw(15) << "Popularidad" << setw(10) << "Anio" << setw(15) << "Genero" << setw(10) << "Duracion" << endl;
     cout << string(100, '-') << endl;
 
     while (actual) {

@@ -4,43 +4,148 @@
 #include "lista_enlazada.h"
 using namespace std;
 
-
+// Función que muestra el menú principal
 void menu_principal(){
-    cout<<endl;
-    cout<<"____________Menu____________"<<endl;
-    cout<<"1. Cargar datos a la estructura"<<endl;
-    cout<<"2. Listar todas las musicas"<<endl;
-    cout<<"3. Buscar por nombre en todo"<<endl;
-    cout<<"4. PlayList"<<endl;
-    cout<<endl<<"0. Salir"<<endl<<endl;
-
-    cout<<"Elige una opcion: ";
+    cout << endl;
+    cout << "____________Menu____________" << endl;
+    cout << "1. Listar todas las musicas" << endl;
+    cout << "2. Buscar por nombre en todo" << endl;
+    cout << "3. PlayList" << endl;
+    cout << endl << "0. Salir" << endl << endl;
+    cout << "Elige una opcion: ";
 }
 
-
+// Función que muestra el menú de la PlayList
 void mostrarMenu() {
     cout << endl;
-    cout << "____________PlayList_____________"<<endl;
+    cout << "____________PlayList_____________" << endl;
     cout << "1. Agregar una nueva cancion\n";
     cout << "2. Mostrar lista de canciones\n";
     cout << "3. Ordenar canciones por criterio\n";
     cout << "4. Buscar cancion por nombre\n";
     cout << "5. Buscar canciones por artista\n";
-    cout<<endl;
+    cout << endl;
     cout << "0. Salir\n";
-    cout<<endl;
+    cout << endl;
     cout << "Ingrese su opcion: ";
 }
 
+// Función para cargar canciones desde un archivo CSV
+void cargarCancionesDesdeArchivo(const string& nombreArchivo, TablaHash& tablaHash, NodoTrie*& raiz) {
+    cout << "Procesando archivo| " << nombreArchivo << endl << endl;
+    // Cargar datos desde el archivo CSV para la tabla HASH
+    cargarDatosDesdeArchivo(nombreArchivo, tablaHash);
+
+    int cont1 = 0, cont2 = 0;
+    // Procesar el archivo CSV y cargar las canciones en el Trie
+    raiz = procesar_archivo(nombreArchivo, raiz, cont1, cont2);
+    cout << "TRIE: Lineas Procesadas (" << cont1 << ") - lineas omitidas (" << cont2 << ")" << endl;
+}
+
+// Función para agregar una canción a la PlayList
+void agregarCancionAPlayList(NodoTrie* raiz, TablaHash& tablaHash) {
+    int key_2 = 1;
+    while (key_2 == 1) {
+        // Buscar canciones con un prefijo dado
+        string prefijo;
+        cout << "Ingrese un prefijo para buscar canciones: ";
+        cin >> prefijo;
+        cout << endl;
+        cout << "Canciones que comienzan con ('" << prefijo << "'): \n";
+        cout << endl;
+
+        vector<string> track_ids = buscar_prefijo(raiz, prefijo);
+        if (!track_ids.empty()) {
+            // Imprimir lista de canciones encontradas
+            cout << left << setw(8) << "IdCancion" << setw(60) << "Cancion" << setw(30) << "Artista" << setw(7) << "Anio" << setw(12) << "Genero" << setw(10) << "Duracion" << endl;
+            cout << string(131, '-') << endl;
+
+            int num_id = 0;
+            for (const string& track_id : track_ids) {
+                try {
+                    Cancion cancion = tablaHash.buscar(track_id);
+                    cout << left << setw(8) << ++num_id << setw(60) << cancion.nombreCancion << setw(30) << cancion.artista << setw(7)
+                         << cancion.anio << setw(12) << cancion.genero << setw(10) << cancion.duracion << endl;
+                } catch (const runtime_error& e) {
+                    cout << e.what() << endl;
+                }
+            }
+            cout << "Agregar Cancion a la PlayList (1/0): ";
+            cin >> key_2;
+
+            if (key_2 == 1) {
+                int llave;
+                cout << "Digite el ID de la Cancion: ";
+                cin >> llave;
+
+                Cancion unaCancion = tablaHash.buscar(track_ids[llave-1]);
+                string atri_02, atri_03, atri_04, atri_07;
+                int atri_01, atri_05, atri_06, atri_10, atri_12, atri_19, atri_20;
+                float atri_08, atri_09, atri_11,atri_13, atri_14, atri_15, atri_16, atri_17, atri_18;
+                atri_01 = unaCancion.id;
+                atri_02 = unaCancion.artista;
+                atri_03 = unaCancion.nombreCancion;
+                atri_04 = unaCancion.idCancion;
+                atri_05 = unaCancion.popularidad;
+                atri_06 = unaCancion.anio;
+                atri_07 = unaCancion.genero;
+                atri_08 = unaCancion.danceabilidad;
+                atri_09 = unaCancion.energia;
+                atri_10 = unaCancion.clave;
+                atri_11 = unaCancion.volumen;
+                atri_12 = unaCancion.modo;
+                atri_13 = unaCancion.discurso;
+                atri_14 = unaCancion.acustica;
+                atri_15 = unaCancion.instrumentalidad;
+                atri_16 = unaCancion.vivacidad;
+                atri_17 = unaCancion.valencia;
+                atri_18 = unaCancion.tempo;
+                atri_19 = unaCancion.duracion;
+                atri_20 = unaCancion.firmaTiempo;
+
+                Cancionn nuevaCancion;
+
+                nuevaCancion.id=atri_01;
+                nuevaCancion.artist_name=atri_02;
+                nuevaCancion.track_name=atri_03;
+                nuevaCancion.track_id=atri_04;
+                nuevaCancion.popularity=atri_05;
+                nuevaCancion.year=atri_06;
+                nuevaCancion.genre=atri_07;
+                nuevaCancion.danceability=atri_08;
+                nuevaCancion.energy=atri_09;
+                nuevaCancion.key=atri_10;
+                nuevaCancion.loudness=atri_11;
+                nuevaCancion.mode=atri_12;
+                nuevaCancion.speechiness=atri_13;
+                nuevaCancion.acousticness=atri_14;
+                nuevaCancion.instrumentalness=atri_15;
+                nuevaCancion.liveness=atri_16;
+                nuevaCancion.valence=atri_17;
+                nuevaCancion.tempo=atri_18;
+                nuevaCancion.duration_ms=atri_19;
+                nuevaCancion.time_signature=atri_20;
+
+                agregarCancion(nuevaCancion);
+                cout<<"la cancion: "<<atri_03<<", fue agregada"<<endl;
+                key_2=0;
+            }
+        } else {
+            cout << "No se encontraron canciones con el prefijo '" << prefijo << "'.\n";
+            key_2=0;
+        }
+    }
+}
+
+
 int main() {
-
-    string nombreArchivo="spotify_data_mini.csv";
-
-    // Crear una tabla hash con 10 posiciones
+    string nombreArchivo = "spotify_data_mini.csv";
     TablaHash tablaHash(10);
+    NodoTrie* raiz = nullptr;
 
-    NodoTrie* raiz = nullptr;//nodo trie
+    cargarCancionesDesdeArchivo(nombreArchivo, tablaHash, raiz);
 
+    // Agregar algunas canciones de ejemplo (opcional)
     Cancionn nuevaCancion;//lista enlazada
 
     agregarCancion({0, "Jason Mraz", "I Won't Give Up", "53QF56cjZA9RTuuMZDrSA6", 68, 2012, "acoustic", 0.483, 0.303, 4, -10.058, 1, 0.0429, 0.694, 0.0, 0.115, 0.139, 133.406, 240166, 3});
@@ -65,241 +170,97 @@ int main() {
     agregarCancion({19, "Sara Bareilles", "Once Upon Another Time", "7KG9zriC6iP8F1CNihtR8Y", 39, 2012, "acoustic", 0.275, 0.216, 2, -14.504, 1, 0.0493, 0.896, 0.0, 0.231, 0.0551, 95.421, 324333, 5});
     agregarCancion({20, "Harley Poe", "The Hearse Song", "09ibWmdrePCN2E2Gbm4Aen", 39, 2012, "acoustic", 0.512, 0.375, 11, -9.525, 0, 0.0652, 0.527, 0.0, 0.109, 0.445, 183.452, 166467, 3});
 
-
-    int key=0;
+    int key = 0;
     int opcion;
 
-    while(key==0){
+    while (key == 0) {
         menu_principal();
         cin >> opcion;
-        cout<<endl;
-        switch (opcion){
-        case 1:
-            {
-            cout<<"Procesando archivo| "<<nombreArchivo<<endl<<endl;
-            // Cargar datos desde el archivo CSV para tabla HAHS
-            cargarDatosDesdeArchivo(nombreArchivo, tablaHash);
-            int cont1=0;
-            int cont2=0;
-            // Procesar el archivo CSV y cargar las canciones en el Trie
-            raiz = procesar_archivo(nombreArchivo, raiz, cont1, cont2);
-            cout<<"TRIE: Lineas Procesadas ("<<cont1<<") - lineas omitidas ("<<cont2<<")"<<endl;
-            }
-            break;
+        cout << endl;
+        switch (opcion) {
 
-        case 2:
-            /*
-            // HASH
-            // Mostrar el contenido de la tabla hash
-            cout << "Contenido de la tabla hash:" << endl;
-            tablaHash.mostrar();
+            case 1:
+                cout << "Contenido del Trie: \n";
+                imprimir_trie(raiz);
+                break;
 
-            // Buscar una canción por su idCancion
-            try {
-                Cancion cancion = tablaHash.buscar("0W2HX4PEW1faQKCwnlio3y");
-                cout << "\nCanción encontrada: " << cancion.nombreCancion << " de " << cancion.artista << endl;
-            } catch (const runtime_error& e) {
-                cout << e.what() << endl;
-            }
-            */
-            // TRIE
-            //Imprimir el Trie completo (todas las canciones con su track_id)
-            std::cout << "Contenido del Trie: \n";
-            imprimir_trie(raiz);
+            case 2: {
+                int key_2 = 1;
+                while (key_2 == 1) {
+                    string prefijo;
+                    cout << "Ingrese un prefijo para buscar canciones: ";
+                    cin >> prefijo;
+                    cout << endl;
+                    cout << "Canciones que comienzan con -|> '" << prefijo << "': \n";
+                    cout << endl;
+                    buscar_por_prefijo(raiz, prefijo, tablaHash);
 
-            break;
-
-        case 3:
-            {
-            int key_2=1;
-            while(key_2==1){
-                // Buscar canciones con un prefijo dado
-                string prefijo;
-                cout << "Ingrese un prefijo para buscar canciones: ";
-                cin >> prefijo;
-                cout<<endl;
-                cout << "Canciones que comienzan con -|> '" << prefijo << "': \n";
-                cout<<endl;
-                buscar_por_prefijo(raiz, prefijo, tablaHash);
-
-                cout<<endl<<endl;
-                cout<<"Continuar buscando? (1/0): ";
-                cin >> key_2;
-            }
-            }
-            break;
-        case 4:
-            {
-            int elige;
-            do {
-                mostrarMenu();
-                cin >> elige;
-
-                switch (elige) {
-                    case 1: {//agregar canción a la lista enlazada
-
-                        int key_2=1;
-                        while(key_2==1){
-                            // Buscar canciones con un prefijo dado
-                            string prefijo;
-                            cout << "Ingrese un prefijo para buscar canciones: ";
-                            cin >> prefijo;
-                            cout<<endl;
-                            cout << "Canciones que comienzan con (" << prefijo << "): \n";
-                            cout<<endl;
-                            vector<string> track_ids = buscar_prefijo(raiz, prefijo);
-                            if(!track_ids.empty()){
-                                cout<<left<<setw(8)<<"IdCancion"<<setw(60)<<"Cancion"<<setw(30)<<"Artista"<<setw(7)<<"Anio"<<setw(12)<<"Genero"<<setw(10)<<"Duracion"<<endl;
-                                cout<<string(131,'-')<<endl;
-                                int num_id=0;
-                                for (const string& track_id : track_ids) {
-                                    // Buscar una canción por su idCancion
-                                    try {
-                                        Cancion cancion = tablaHash.buscar(track_id);
-                                        cout<<left<<setw(8)<<++num_id<<setw(60)<<cancion.nombreCancion<<setw(30)<<cancion.artista<<setw(7)
-                                            <<cancion.anio<<setw(12)<<cancion.genero<<setw(10)<<cancion.duracion<<endl;
-                                    } catch (const runtime_error& e) {
-                                        cout << e.what() << endl;
-                                    }
-                                }
-                            }else{
-                                cout << "No se encontraron canciones con el prefijo '" << prefijo << "'.\n";
-                            }
-                            cout<<endl;
-
-                            cout<<"Buscar Nuevamente? (1/0): ";
-                            cin >> key_2;
-                            if(key_2==0){
-                                cout<<"Agregar Cancion a la PlayList (1/0): ";
-                                cin>>key_2;
-                                if(key_2==1){
-                                    int llave;
-                                    cout<<"digite el ID de la Cancion: ";
-                                    cin>>llave;
-
-                                    Cancion unaCancion = tablaHash.buscar(track_ids[llave-1]);
-                                    string atri_02, atri_03, atri_04, atri_07;
-                                    int atri_01, atri_05, atri_06, atri_10, atri_12, atri_19, atri_20;
-                                    float atri_08, atri_09, atri_11,atri_13, atri_14, atri_15, atri_16, atri_17, atri_18;
-                                    atri_01 = unaCancion.id;
-                                    atri_02 = unaCancion.artista;
-                                    atri_03 = unaCancion.nombreCancion;
-                                    atri_04 = unaCancion.idCancion;
-                                    atri_05 = unaCancion.popularidad;
-                                    atri_06 = unaCancion.anio;
-                                    atri_07 = unaCancion.genero;
-                                    atri_08 = unaCancion.danceabilidad;
-                                    atri_09 = unaCancion.energia;
-                                    atri_10 = unaCancion.clave;
-                                    atri_11 = unaCancion.volumen;
-                                    atri_12 = unaCancion.modo;
-                                    atri_13 = unaCancion.discurso;
-                                    atri_14 = unaCancion.acustica;
-                                    atri_15 = unaCancion.instrumentalidad;
-                                    atri_16 = unaCancion.vivacidad;
-                                    atri_17 = unaCancion.valencia;
-                                    atri_18 = unaCancion.tempo;
-                                    atri_19 = unaCancion.duracion;
-                                    atri_20 = unaCancion.firmaTiempo;
-
-                                    Cancionn nuevaCancion;
-
-                                    nuevaCancion.id=atri_01;
-                                    nuevaCancion.artist_name=atri_02;
-                                    nuevaCancion.track_name=atri_03;
-                                    nuevaCancion.track_id=atri_04;
-                                    nuevaCancion.popularity=atri_05;
-                                    nuevaCancion.year=atri_06;
-                                    nuevaCancion.genre=atri_07;
-                                    nuevaCancion.danceability=atri_08;
-                                    nuevaCancion.energy=atri_09;
-                                    nuevaCancion.key=atri_10;
-                                    nuevaCancion.loudness=atri_11;
-                                    nuevaCancion.mode=atri_12;
-                                    nuevaCancion.speechiness=atri_13;
-                                    nuevaCancion.acousticness=atri_14;
-                                    nuevaCancion.instrumentalness=atri_15;
-                                    nuevaCancion.liveness=atri_16;
-                                    nuevaCancion.valence=atri_17;
-                                    nuevaCancion.tempo=atri_18;
-                                    nuevaCancion.duration_ms=atri_19;
-                                    nuevaCancion.time_signature=atri_20;
-
-                                    agregarCancion(nuevaCancion);
-                                }else{
-                                    key_2==0;
-                                }
-
-                            }
-                        }
-                        /*
-                        cout << "Ingrese los datos de la canción:\n";
-                        cout << "ID: "; cin >> nuevaCancion.id;
-                        cin.ignore();
-                        cout << "Nombre del artista: "; getline(cin, nuevaCancion.artist_name);
-                        cout << "Nombre de la canción: "; getline(cin, nuevaCancion.track_name);
-                        cout << "Track ID: "; cin >> nuevaCancion.track_id;
-                        cout << "Popularidad: "; cin >> nuevaCancion.popularity;
-                        cout << "Año: "; cin >> nuevaCancion.year;
-                        cout << "Género: "; cin >> nuevaCancion.genre;
-                        cout << "Duración (ms): "; cin >> nuevaCancion.duration_ms;
-                        agregarCancion(nuevaCancion);
-                        cout << "Canción agregada exitosamente.\n";
-                        */
-                        break;
-                    }
-                    case 2:
-                        mostrarLista();
-                        break;
-                    case 3: {
-                        string criterio;
-                        cout << "Ingrese el criterio para ordenar (popularity, year, artist_name): ";
-                        cin >> criterio;
-                        ordenarPorCriterio(criterio);
-                        break;
-                    }
-                    case 4: {//busqueda por nombre
-                        string nombre;
-                        bool hay;
-                        cout << "Ingrese el nombre de la canción a buscar: ";
-                        cin.ignore();
-                        getline(cin, nombre);
-                        buscarPorNombre(nombre, hay);
-                        if (!hay) cout << "No se encontraron coincidencias.\n";
-                        break;
-                    }
-                    case 5: {//búsqueda por artista
-                        string artista;
-                        bool hay;
-                        cout << "Ingrese el nombre del artista a buscar: ";
-                        cin.ignore();
-                        getline(cin, artista);
-                        buscarPorArtista(artista, hay);
-                        if (!hay) cout << "No se encontraron coincidencias.\n";
-                        break;
-                    }
-                    case 0:
-                        cout << "Saliendo del programa...\n";
-                        break;
-                    default:
-                        cout << "Opcion invalida. Intente de nuevo.\n";
+                    cout << endl << "Continuar buscando? (1/0): ";
+                    cin >> key_2;
                 }
-            } while (elige != 0);
             }
             break;
-        case 0:
-            key=1;
-            break;
 
-        default:
-            cout << "Opcion no valida. Intente de nuevo." << endl;
-            break;
+            case 3:
+                int elige;
+                do {
+                    mostrarMenu();
+                    cin >> elige;
+                    switch (elige) {
+                        case 1:
+                            agregarCancionAPlayList(raiz, tablaHash);
+                            break;
+                        case 2:
+                            mostrarLista();
+                            break;
+                        case 3: {
+                            string criterio;
+                            cout << "Ingrese el criterio para ordenar (popularity, year, artist_name): ";
+                            cin >> criterio;
+                            ordenarPorCriterio(criterio);
+                            break;
+                        }
+                        case 4: {
+                            string nombre;
+                            bool hay;
+                            cout << "Ingrese el nombre de la canción a buscar: ";
+                            cin.ignore();
+                            getline(cin, nombre);
+                            buscarPorNombre(nombre, hay);
+                            if (!hay) cout << "No se encontraron coincidencias.\n";
+                            break;
+                        }
+                        case 5: {
+                            string artista;
+                            bool hay;
+                            cout << "Ingrese el nombre del artista a buscar: ";
+                            cin.ignore();
+                            getline(cin, artista);
+                            buscarPorArtista(artista, hay);
+                            if (!hay) cout << "No se encontraron coincidencias.\n";
+                            break;
+                        }
+                        case 0:
+                            cout << "Saliendo al Menu Principal...\n";
+                            break;
+                        default:
+                            cout << "Opcion invalida. Intente de nuevo.\n";
+                    }
+                } while (elige != 0);
+                break;
+
+            case 0:
+                key = 1;
+                break;
+
+            default:
+                cout << "Opcion no valida. Intente de nuevo." << endl;
+                break;
         }
     }
-    //de la lista enlazada
-    liberarMemoria();
-    // Liberar la memoria del Trie
+
+    // Liberar memoria
+    liberarMemoria();// lista enlazada
     liberar_trie(raiz);
     return 0;
-
 }
