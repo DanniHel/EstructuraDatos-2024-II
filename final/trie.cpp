@@ -82,7 +82,7 @@ void imprimir_trie(NodoTrie* raiz, string palabra) {
 // Modificamos la función imprimir_trie para buscar y mostrar información desde la tabla hash
 
 void imprimir_trie_mas(NodoTrie* raiz, string palabra, TablaHash& tablaHash) {
-    //int num=0;
+    static int num=1;
     if (raiz == nullptr) {
         return;
     }
@@ -93,7 +93,8 @@ void imprimir_trie_mas(NodoTrie* raiz, string palabra, TablaHash& tablaHash) {
             // Usamos el track_id del nodo para buscar la canción en la tabla hash
             Cancion cancion = tablaHash.buscar(raiz->track_id);
 
-            // Mostrar los detalles de la canción
+            // Mostrar los detalles de la canción7
+            cout<<"N: "<<num<<endl;
             cout << "Canción: " << palabra << ", Track ID: " << raiz->track_id << endl;
 
             cout << "Artista: " << cancion.artista << endl;
@@ -103,7 +104,7 @@ void imprimir_trie_mas(NodoTrie* raiz, string palabra, TablaHash& tablaHash) {
             cout << "Tempo: " << cancion.tempo << ", Clave: " << cancion.clave << endl;
             cout << "Volumen: " << cancion.volumen << ", Modo: " << cancion.modo << endl;
             cout << endl;
-            cout<<"num"<<numm++;
+            num++;
         } catch (const runtime_error& e) {
             cout << "Error al recuperar la canción con Track ID: " << raiz->track_id << endl;
         }
