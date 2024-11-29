@@ -136,7 +136,7 @@ int main() {
                 cin >> elige;
 
                 switch (elige) {
-                    case 1: {
+                    case 1: {//agregar canción a la lista enlazada
 
                         int key_2=1;
                         while(key_2==1){
@@ -145,13 +145,92 @@ int main() {
                             cout << "Ingrese un prefijo para buscar canciones: ";
                             cin >> prefijo;
                             cout<<endl;
-                            cout << "Canciones que comienzan con -|> '" << prefijo << "': \n";
+                            cout << "Canciones que comienzan con (" << prefijo << "): \n";
                             cout<<endl;
-                            buscar_por_prefijo(raiz, prefijo, tablaHash);
+                            vector<string> track_ids = buscar_prefijo(raiz, prefijo);
+                            if(!track_ids.empty()){
+                                cout<<left<<setw(8)<<"IdCancion"<<setw(60)<<"Cancion"<<setw(30)<<"Artista"<<setw(7)<<"Anio"<<setw(12)<<"Genero"<<setw(10)<<"Duracion"<<endl;
+                                cout<<string(131,'-')<<endl;
+                                int num_id=0;
+                                for (const string& track_id : track_ids) {
+                                    // Buscar una canción por su idCancion
+                                    try {
+                                        Cancion cancion = tablaHash.buscar(track_id);
+                                        cout<<left<<setw(8)<<++num_id<<setw(60)<<cancion.nombreCancion<<setw(30)<<cancion.artista<<setw(7)
+                                            <<cancion.anio<<setw(12)<<cancion.genero<<setw(10)<<cancion.duracion<<endl;
+                                    } catch (const runtime_error& e) {
+                                        cout << e.what() << endl;
+                                    }
+                                }
+                            }else{
+                                cout << "No se encontraron canciones con el prefijo '" << prefijo << "'.\n";
+                            }
+                            cout<<endl;
 
-                            cout<<endl;
-                            cout<<"Continuar buscando? (1/0): ";
+                            cout<<"Buscar Nuevamente? (1/0): ";
                             cin >> key_2;
+                            if(key_2==0){
+                                cout<<"Agregar Cancion a la PlayList (1/0): ";
+                                cin>>key_2;
+                                if(key_2==1){
+                                    int llave;
+                                    cout<<"digite el ID de la Cancion: ";
+                                    cin>>llave;
+
+                                    Cancion unaCancion = tablaHash.buscar(track_ids[llave-1]);
+                                    string atri_02, atri_03, atri_04, atri_07;
+                                    int atri_01, atri_05, atri_06, atri_10, atri_12, atri_19, atri_20;
+                                    float atri_08, atri_09, atri_11,atri_13, atri_14, atri_15, atri_16, atri_17, atri_18;
+                                    atri_01 = unaCancion.id;
+                                    atri_02 = unaCancion.artista;
+                                    atri_03 = unaCancion.nombreCancion;
+                                    atri_04 = unaCancion.idCancion;
+                                    atri_05 = unaCancion.popularidad;
+                                    atri_06 = unaCancion.anio;
+                                    atri_07 = unaCancion.genero;
+                                    atri_08 = unaCancion.danceabilidad;
+                                    atri_09 = unaCancion.energia;
+                                    atri_10 = unaCancion.clave;
+                                    atri_11 = unaCancion.volumen;
+                                    atri_12 = unaCancion.modo;
+                                    atri_13 = unaCancion.discurso;
+                                    atri_14 = unaCancion.acustica;
+                                    atri_15 = unaCancion.instrumentalidad;
+                                    atri_16 = unaCancion.vivacidad;
+                                    atri_17 = unaCancion.valencia;
+                                    atri_18 = unaCancion.tempo;
+                                    atri_19 = unaCancion.duracion;
+                                    atri_20 = unaCancion.firmaTiempo;
+
+                                    Cancionn nuevaCancion;
+
+                                    nuevaCancion.id=atri_01;
+                                    nuevaCancion.artist_name=atri_02;
+                                    nuevaCancion.track_name=atri_03;
+                                    nuevaCancion.track_id=atri_04;
+                                    nuevaCancion.popularity=atri_05;
+                                    nuevaCancion.year=atri_06;
+                                    nuevaCancion.genre=atri_07;
+                                    nuevaCancion.danceability=atri_08;
+                                    nuevaCancion.energy=atri_09;
+                                    nuevaCancion.key=atri_10;
+                                    nuevaCancion.loudness=atri_11;
+                                    nuevaCancion.mode=atri_12;
+                                    nuevaCancion.speechiness=atri_13;
+                                    nuevaCancion.acousticness=atri_14;
+                                    nuevaCancion.instrumentalness=atri_15;
+                                    nuevaCancion.liveness=atri_16;
+                                    nuevaCancion.valence=atri_17;
+                                    nuevaCancion.tempo=atri_18;
+                                    nuevaCancion.duration_ms=atri_19;
+                                    nuevaCancion.time_signature=atri_20;
+
+                                    agregarCancion(nuevaCancion);
+                                }else{
+                                    key_2==0;
+                                }
+
+                            }
                         }
                         /*
                         cout << "Ingrese los datos de la canción:\n";
@@ -179,7 +258,7 @@ int main() {
                         ordenarPorCriterio(criterio);
                         break;
                     }
-                    case 4: {
+                    case 4: {//busqueda por nombre
                         string nombre;
                         bool hay;
                         cout << "Ingrese el nombre de la canción a buscar: ";
@@ -189,7 +268,7 @@ int main() {
                         if (!hay) cout << "No se encontraron coincidencias.\n";
                         break;
                     }
-                    case 5: {
+                    case 5: {//búsqueda por artista
                         string artista;
                         bool hay;
                         cout << "Ingrese el nombre del artista a buscar: ";
@@ -203,7 +282,7 @@ int main() {
                         cout << "Saliendo del programa...\n";
                         break;
                     default:
-                        cout << "Opción inválida. Intente de nuevo.\n";
+                        cout << "Opcion invalida. Intente de nuevo.\n";
                 }
             } while (elige != 0);
             }
@@ -213,7 +292,7 @@ int main() {
             break;
 
         default:
-            cout << "Opción no válida. Intente de nuevo." << endl;
+            cout << "Opcion no valida. Intente de nuevo." << endl;
             break;
         }
     }

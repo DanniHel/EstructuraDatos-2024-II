@@ -4,9 +4,9 @@ Nodo* cabeza = nullptr;
 Nodo* cola = nullptr;
 
 void Cancionn::mostrar() const {
-    cout << left << setw(5) << id
+    cout << left << setw(8) << id
          << setw(20) << artist_name
-         << setw(25) << track_name
+         << setw(45) << track_name
          << setw(15) << popularity
          << setw(10) << year
          << setw(15) << genre
@@ -85,8 +85,8 @@ void mostrarLista() {
         return;
     }
     Nodo* actual = cabeza;
-    cout << left << setw(5) << "ID" << setw(20) << "Artista" << setw(25) << "Nombre de la canción"
-         << setw(15) << "Popularidad" << setw(10) << "Año" << setw(15) << "Género" << setw(10) << "Duración" << endl;
+    cout << left << setw(8) << "ID" << setw(20) << "Artista" << setw(45) << "Nombre de la cancion"
+         << setw(15) << "Popularidad" << setw(10) << "Anio" << setw(15) << "Genero" << setw(10) << "Duracion" << endl;
     cout << string(100, '-') << endl;
     while (actual) {
         actual->cancion.mostrar();

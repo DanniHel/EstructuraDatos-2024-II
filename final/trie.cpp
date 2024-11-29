@@ -1,10 +1,5 @@
 // trie.cpp
 #include "trie.h"
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <cstdlib>
-using namespace std;
 
 // Constructor para inicializar el nodo
 NodoTrie::NodoTrie(char dato) {
@@ -93,7 +88,7 @@ void imprimir_trie_mas(NodoTrie* raiz, string palabra, TablaHash& tablaHash) {
             // Usamos el track_id del nodo para buscar la canción en la tabla hash
             Cancion cancion = tablaHash.buscar(raiz->track_id);
 
-            // Mostrar los detalles de la canción7
+            // Mostrar los detalles de la canción
             cout<<"N: "<<num<<endl;
             cout << "Canción: " << palabra << ", Track ID: " << raiz->track_id << endl;
 
@@ -138,6 +133,54 @@ void buscar_por_prefijo(NodoTrie* raiz, const string& prefijo, TablaHash& tablaH
     // Si encontramos el nodo correspondiente al prefijo, imprimir todas las palabras que empiezan con él
     imprimir_trie_mas(actual, prefijo, tablaHash);
 }
+//-----------------------------------------------------------------------------------------------
+//-----------------------------Iserción para la lista enlazada-----------------------------------
+//-----------------------------------------------------------------------------------------------
+//busqueda y recuperación de track_id
+
+// Función auxiliar para realizar el recorrido DFS y recolectar los track_id
+void recolectar_track_ids(NodoTrie* nodo, const string& palabra, vector<string>& track_ids) {
+    if (nodo == nullptr) return;
+
+    // Si es un nodo hoja, agregar el track_id al vector
+    if (nodo->es_hoja) {
+        track_ids.push_back(nodo->track_id);  // Agregar el track_id encontrado
+    }
+
+    // Recorrer los hijos
+    for (int i = 0; i < MAX_CHARACTERS; i++) {
+        if (nodo->hijos[i] != nullptr) {
+            recolectar_track_ids(nodo->hijos[i], palabra + nodo->hijos[i]->dato, track_ids);
+        }
+    }
+}
+
+// Modificamos la función buscar_por_prefijo para que retorne una lista de track_id
+vector<string> buscar_prefijo(NodoTrie* raiz, const string& prefijo) {
+    vector<string> track_ids;
+    NodoTrie* actual = raiz;
+
+    // Recorrer el prefijo
+    for (char c : prefijo) {
+        if (c >= ' ' && c <= '~') {  // Solo buscar caracteres imprimibles
+            int indice = obtener_indice_char(c);
+            if (actual->hijos[indice] == nullptr) {
+                // Si no se encuentra el prefijo, retornar lista vacía
+                return track_ids;
+            }
+            actual = actual->hijos[indice];
+        }
+    }
+
+    // Si encontramos el nodo correspondiente al prefijo, recolectar todos los track_id
+    // Realizamos un recorrido en profundidad (DFS) para recolectar los track_ids
+    recolectar_track_ids(actual, prefijo, track_ids);
+
+    return track_ids;
+}
+
+//-----------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
 
 // Función para leer el archivo CSV y procesar las canciones
 NodoTrie* procesar_archivo(const string& archivo, NodoTrie* raiz,int& cont1, int& cont2) {

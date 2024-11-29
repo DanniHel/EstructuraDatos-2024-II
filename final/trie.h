@@ -4,6 +4,12 @@
 
 #include <string>
 #include "hash.h"
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <cstdlib>
+#include <vector>
+using namespace std;
 
 // Definir el número de caracteres imprimibles (desde espacio hasta '~')
 #define MAX_CHARACTERS 95
@@ -28,5 +34,7 @@ void imprimir_trie(NodoTrie* raiz, std::string palabra = "");
 void imprimir_trie_mas(NodoTrie* raiz, std::string palabra, TablaHash& tablaHash);
 void buscar_por_prefijo(NodoTrie* raiz, const std::string& prefijo, TablaHash& tablaHash);
 NodoTrie* procesar_archivo(const std::string& archivo, NodoTrie* raiz,int& cont1, int& cont2);
+void recolectar_track_ids(NodoTrie* nodo, const string& palabra, vector<string>& track_ids);
+vector<string> buscar_prefijo(NodoTrie* raiz, const string& prefijo);
 
 #endif // TRIE_H
