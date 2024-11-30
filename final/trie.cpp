@@ -232,7 +232,7 @@ NodoTrie* procesar_archivo(const string& archivo, NodoTrie* raiz,int& cont1, int
 
         } catch (const exception& e) {
             cont2++;
-            //cerr << "Error al procesar la línea: " << linea << endl;
+            cerr << "Error al procesar la línea: " << line << endl;
         }
     }
 

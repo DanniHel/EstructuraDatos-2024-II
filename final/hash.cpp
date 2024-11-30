@@ -68,7 +68,6 @@ void cargarDatosDesdeArchivo(string nombreArchivo, TablaHash& tablaHash) {
     while (getline(archivo, linea)) {
         stringstream ss(linea);
         string token;
-
         Cancion cancion;
         try {
             // Extraemos los datos de la línea

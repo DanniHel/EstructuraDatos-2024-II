@@ -48,7 +48,7 @@ void agregarCancion(const Cancionn& cancion);
 void eliminarPorID(int id);
 void eliminarPorNombre(const string& nombre);
 void mostrarLista();
-void ordenarPorCriterio(const string& criterio);
+void ordenarPorCriterio(int criterio, int orden);
 void buscarPorNombre(const string& nombre, bool& hay);
 void buscarPorArtista(const string& artista, bool& hay);
 
