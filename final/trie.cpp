@@ -63,7 +63,9 @@ void imprimir_trie(NodoTrie* raiz, string palabra) {
 
     // Si es un nodo hoja, imprimir la palabra formada hasta ese punto
     if (raiz->es_hoja) {
-        cout << "Canción: " << palabra << endl;
+        cout << "Canción: " << palabra;
+        //cout<< "id: " << raiz->hijos[i];
+        cout<<endl;
     }
 
     // Recorrer los hijos
@@ -198,6 +200,52 @@ NodoTrie* procesar_archivo(const string& archivo, NodoTrie* raiz,int& cont1, int
     // Procesar cada línea del archivo
 
     while (getline(file, line)) {
+
+        //segundo extraemos todos las (") , no todas( expresion<<entre comillas>>)
+
+            int incre1=0;
+            int pos2;
+            for(int i=0;i<line.size();i++){
+                if(line[i]=='"' && line[i+1]=='"' && line[i+2]=='"' && line[i+3]=='"'){
+                    incre1++;
+                    if(incre1==2){
+                        //seleccionamos el primero y el ultimo
+                        line[pos2]='\\';
+                        line[pos2+1]='\\';
+                        line[i+2]='\\';
+                        line[i+3]='\\';
+                    }
+                    pos2=i;
+                }
+
+            }
+
+        //primero cambiamos la (,) por otro caracter;
+        //reemplazar la coma (,) de entre ("")
+        int incre=0;
+        int pos1;
+        for(int i=0;i<line.size();i++){
+                if(line[i]=='"' && line[i+1]=='"'){//buscamos dos ("") juntas
+                    incre++;//cada vez que hay dos ("") juntas contamos
+                    if(incre>=2){
+                        //si encontramos el segundo grupo de comilas dobles,
+                        //buscamos cualquier (,) entre las dos comillas y lo reemplazamos con (¯)
+                        for(int j=pos1+2;j<i;j++){
+                            if(line[j]==','){
+                                line[j]='\\';
+                            }
+                            //cout<<"("<<line[j]<<")";
+                        }
+                    }
+                    pos1=i;
+                }
+        }
+
+            for(int i=0;i<line.size();i++){
+
+            }
+            line.erase(remove(line.begin(), line.end(), '"'), line.end());
+
         stringstream ss(line);
         string simbolo;
         string artista, track_name, track_id, genero;
@@ -208,7 +256,25 @@ NodoTrie* procesar_archivo(const string& archivo, NodoTrie* raiz,int& cont1, int
             // Extraemos los datos de la línea
             getline(ss, simbolo, ','); id = stoi(simbolo);  // id
             getline(ss, artista, ',');  // artista
-            getline(ss, track_name, ',');  // track_name
+            getline(ss, simbolo, ',');  // track_name
+
+            //reemplazamos una (/)invertida por un (")
+            for(int i=0;i<simbolo.size();i++){
+                if(simbolo[i]=='\\' && simbolo[i+1]=='\\'){
+                    simbolo[i]='"';
+                }
+            }
+
+            for(int i=0;i<simbolo.size();i++){
+                if(simbolo[i]=='\\' && simbolo[i+1]==' '){
+                    simbolo[i]=',';
+                }
+            }
+            //eliminamos todo los (/)invertidas que quedaron
+            simbolo.erase(remove(simbolo.begin(), simbolo.end(), '\\'), simbolo.end());
+
+            track_name=simbolo;
+
             getline(ss, track_id, ',');  // track_id
             getline(ss, simbolo, ','); popularidad = stoi(simbolo);  // popularity
             getline(ss, simbolo, ','); anio = stoi(simbolo);  // year
