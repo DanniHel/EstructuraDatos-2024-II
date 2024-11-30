@@ -66,6 +66,49 @@ void cargarDatosDesdeArchivo(string nombreArchivo, TablaHash& tablaHash) {
     int num2 = 0; // procesados correctamente
     // Leer cada línea del archivo y procesarla
     while (getline(archivo, linea)) {
+        //primero buscamos dos grupo de 4 ("),
+        //a los dos primeros del primer grupo lo reemplazamos con un / invertido a cada uno
+        //a los dos ultimos del segundo grupo lo reemplazamos con un / invertido a cada uno
+        int incre1=0;
+        int pos2;
+        for(int i=0;i<linea.size();i++){
+            if(linea[i]=='"' && linea[i+1]=='"' && linea[i+2]=='"' && linea[i+3]=='"'){
+                incre1++;
+                if(incre1==2){
+                    //seleccionamos el primero y el ultimo
+                    linea[pos2]='\\';
+                    linea[pos2+1]='\\';
+                    linea[i+2]='\\';
+                    linea[i+3]='\\';
+                }
+                pos2=i;
+            }
+
+        }
+
+        //segundo cambiamos la (,) por otro caracter
+        //reemplazar la coma (,) de entre ("" , "")
+        int incre=0;
+        int pos1;
+        for(int i=0;i<linea.size();i++){
+                if(linea[i]=='"' && linea[i+1]=='"'){//buscamos dos ("") juntas
+                    incre++;//cada vez que hay dos ("") juntas contamos
+                    if(incre>=2){
+                        //si encontramos el segundo grupo de comilas dobles,
+                        //buscamos cualquier (,) entre las dos comillas y lo reemplazamos con (¯)
+                        for(int j=pos1+2;j<i;j++){
+                            if(linea[j]==','){
+                                linea[j]='\\';
+                            }
+                            //cout<<"("<<linea[j]<<")";
+                        }
+                    }
+                    pos1=i;
+                }
+        }
+        //eliminamos todos los "
+        linea.erase(remove(linea.begin(), linea.end(), '"'), linea.end());
+
         stringstream ss(linea);
         string token;
         Cancion cancion;
@@ -73,7 +116,28 @@ void cargarDatosDesdeArchivo(string nombreArchivo, TablaHash& tablaHash) {
             // Extraemos los datos de la línea
             getline(ss, token, ','); cancion.id = stoi(token);  // id
             getline(ss, cancion.artista, ',');  // artista
-            getline(ss, cancion.nombreCancion, ',');  // track_name
+            getline(ss, token, ',');  // track_name
+
+            //¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+            // si encontramos dos /)invertida, reemplazamos el segundo (/)invertida por un (")
+            for(int i=0;i<token.size();i++){
+                if(token[i]=='\\' && token[i+1]=='\\'){
+                    token[i+1]='"';
+                }
+            }
+            //si encontramos un (/)invertida y un espacio
+            //reemplazamos por una coma(,)
+            for(int i=0;i<token.size();i++){
+                if(token[i]=='\\' && token[i+1]==' '){
+                    token[i]=',';
+                }
+            }
+            //eliminamos todo los (/)invertidas que quedaron
+            token.erase(remove(token.begin(), token.end(), '\\'), token.end());
+
+            cancion.nombreCancion=token;
+            //________________________________________________________________________________________
+
             getline(ss, cancion.idCancion, ',');  // track_id
             getline(ss, token, ','); cancion.popularidad = stoi(token);  // popularity
             getline(ss, token, ','); cancion.anio = stoi(token);  // year
@@ -97,7 +161,7 @@ void cargarDatosDesdeArchivo(string nombreArchivo, TablaHash& tablaHash) {
 
         } catch (const exception& e) {
             num1++;
-            //cerr << "Error al procesar la línea: " << linea << endl;
+            //cerr << "Error en la linea: " << linea << endl;
         }
     }
 

@@ -201,27 +201,28 @@ NodoTrie* procesar_archivo(const string& archivo, NodoTrie* raiz,int& cont1, int
 
     while (getline(file, line)) {
 
-        //segundo extraemos todos las (") , no todas( expresion<<entre comillas>>)
-
-            int incre1=0;
-            int pos2;
-            for(int i=0;i<line.size();i++){
-                if(line[i]=='"' && line[i+1]=='"' && line[i+2]=='"' && line[i+3]=='"'){
-                    incre1++;
-                    if(incre1==2){
-                        //seleccionamos el primero y el ultimo
-                        line[pos2]='\\';
-                        line[pos2+1]='\\';
-                        line[i+2]='\\';
-                        line[i+3]='\\';
-                    }
-                    pos2=i;
+        //primero buscamos dos grupo de 4 ("),
+        //a los dos primeros del primer grupo lo reemplazamos con un / invertido a cada uno
+        //a los dos ultimos del segundo grupo lo reemplazamos con un / invertido a cada uno
+        int incre1=0;
+        int pos2;
+        for(int i=0;i<line.size();i++){
+            if(line[i]=='"' && line[i+1]=='"' && line[i+2]=='"' && line[i+3]=='"'){
+                incre1++;
+                if(incre1==2){
+                    //seleccionamos el primero y el ultimo
+                    line[pos2]='\\';
+                    line[pos2+1]='\\';
+                    line[i+2]='\\';
+                    line[i+3]='\\';
                 }
-
+                pos2=i;
             }
 
-        //primero cambiamos la (,) por otro caracter;
-        //reemplazar la coma (,) de entre ("")
+        }
+
+        //segundo cambiamos la (,) por otro caracter
+        //reemplazar la coma (,) de entre ("" , "")
         int incre=0;
         int pos1;
         for(int i=0;i<line.size();i++){
@@ -240,11 +241,8 @@ NodoTrie* procesar_archivo(const string& archivo, NodoTrie* raiz,int& cont1, int
                     pos1=i;
                 }
         }
-
-            for(int i=0;i<line.size();i++){
-
-            }
-            line.erase(remove(line.begin(), line.end(), '"'), line.end());
+        //eliminamos todos los "
+        line.erase(remove(line.begin(), line.end(), '"'), line.end());
 
         stringstream ss(line);
         string simbolo;
@@ -258,13 +256,14 @@ NodoTrie* procesar_archivo(const string& archivo, NodoTrie* raiz,int& cont1, int
             getline(ss, artista, ',');  // artista
             getline(ss, simbolo, ',');  // track_name
 
-            //reemplazamos una (/)invertida por un (")
+            // si encontramos dos /)invertida, reemplazamos el segundo (/)invertida por un (")
             for(int i=0;i<simbolo.size();i++){
                 if(simbolo[i]=='\\' && simbolo[i+1]=='\\'){
-                    simbolo[i]='"';
+                    simbolo[i+1]='"';
                 }
             }
-
+            //si encontramos un (/)invertida y un espacio
+            //reemplazamos por una coma(,)
             for(int i=0;i<simbolo.size();i++){
                 if(simbolo[i]=='\\' && simbolo[i+1]==' '){
                     simbolo[i]=',';
@@ -298,7 +297,7 @@ NodoTrie* procesar_archivo(const string& archivo, NodoTrie* raiz,int& cont1, int
 
         } catch (const exception& e) {
             cont2++;
-            cerr << "Error al procesar la línea: " << line << endl;
+            //cerr << "Error en la linea: " << line << endl;
         }
     }
 

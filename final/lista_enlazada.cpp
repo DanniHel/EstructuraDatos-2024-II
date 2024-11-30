@@ -4,13 +4,29 @@ Nodo* cabeza = nullptr;
 Nodo* cola = nullptr;
 
 void Cancionn::mostrar() const {
-    cout << left << setw(8) << id
-         << setw(20) << artist_name
-         << setw(45) << track_name
-         << setw(15) << popularity
-         << setw(10) << year
-         << setw(15) << genre
-         << setw(10) << duration_ms << "ms"
+    cout << left
+    //<< setw(7) << id
+    << setw(20) << artist_name
+    << setw(45) << track_name
+    << setw(26) << track_id
+    << setw(13) << popularity
+    << setw(7) << year
+    << setw(20) << genre
+    /*<< setw(13) << danceability
+    << setw(7) << energy
+    << setw(4) << key
+    << setw(9) << loudness
+    << setw(5) << mode
+    << setw(12) << speechiness
+    << setw(13) << acousticness
+    << setw(17) << instrumentalness
+    << setw(8) << liveness
+    << setw(8) << valence
+    << setw(8) << tempo*/
+    << setw(13) << duration_ms<< "ms"
+    //<< setw(15) << time_signature
+
+
          << endl;
 }
 
@@ -85,10 +101,33 @@ void mostrarLista() {
         return;
     }
     Nodo* actual = cabeza;
-    cout << left << setw(8) << "ID" << setw(20) << "Artista" << setw(45) << "Nombre de la cancion"
-         << setw(15) << "Popularidad" << setw(10) << "Anio" << setw(15) << "Genero" << setw(10) << "Duracion" << endl;
-    cout << string(100, '-') << endl;
+    cout << left <<setw(4) <<"N."
+         //<< setw(7) << "id"
+         << setw(20) << "artist_name"
+         << setw(45) << "track_name"
+         << setw(26) << "track_id"
+         << setw(13) << "popularity"
+         << setw(7) << "year"
+         << setw(20) << "genre"
+         /*<< setw(13) << "danceability"
+         << setw(7) << "energy"
+         << setw(4) << "key"
+         << setw(9) << "loudness"
+         << setw(5) << "mode"
+         << setw(12) << "speechiness"
+         << setw(13) << "acousticness"
+         << setw(17) << "instrumentalness"
+         << setw(8) << "liveness"
+         << setw(8) << "valence"
+         << setw(8) << "tempo"*/
+         << setw(13) << "duration_ms"<< "ms"
+         //<< setw(15) << "time_signature"
+         << endl;
+
+    cout << string(145, '-') << endl;
+    int sumar1=1;
     while (actual) {
+        cout << setw(4) << sumar1++;
         actual->cancion.mostrar();
         actual = actual->siguiente;
     }
@@ -174,12 +213,36 @@ void buscarPorNombre(const string& nombre, bool& hay) {
     Nodo* actual = cabeza;
     bool encontrado = false;
     cout << "Resultados de busqueda para el nombre de cancion \"" << nombre << "\":\n";
-    cout << left << setw(5) << "ID" << setw(20) << "Artista" << setw(25) << "Nombre de la cancion"
-         << setw(15) << "Popularidad" << setw(10) << "Anio" << setw(15) << "Genero" << setw(10) << "Duracion" << endl;
-    cout << string(100, '-') << endl;
 
+    cout << left <<setw(4) <<"N."
+         //<< setw(7) << "id"
+         << setw(20) << "artist_name"
+         << setw(45) << "track_name"
+         << setw(26) << "track_id"
+         << setw(13) << "popularity"
+         << setw(7) << "year"
+         << setw(20) << "genre"
+         /*<< setw(13) << "danceability"
+         << setw(7) << "energy"
+         << setw(4) << "key"
+         << setw(9) << "loudness"
+         << setw(5) << "mode"
+         << setw(12) << "speechiness"
+         << setw(13) << "acousticness"
+         << setw(17) << "instrumentalness"
+         << setw(8) << "liveness"
+         << setw(8) << "valence"
+         << setw(8) << "tempo"*/
+         << setw(13) << "duration_ms"<< "ms"
+         //<< setw(15) << "time_signature"
+         << endl;
+
+    cout << string(145, '-') << endl;
+
+    int sumar2=1;
     while (actual) {
         if (actual->cancion.track_name == nombre) {
+            cout << setw(3) << sumar2++;
             actual->cancion.mostrar();
             encontrado = true;
         }
@@ -192,12 +255,35 @@ void buscarPorArtista(const string& artista, bool& hay) {
     Nodo* actual = cabeza;
     bool encontrado = false;
     cout << "Resultados de busqueda para el artista \"" << artista << "\":\n";
-    cout << left << setw(5) << "ID" << setw(20) << "Artista" << setw(25) << "Nombre de la cancion"
-         << setw(15) << "Popularidad" << setw(10) << "Anio" << setw(15) << "Genero" << setw(10) << "Duracion" << endl;
-    cout << string(100, '-') << endl;
 
+    cout << left <<setw(4) <<"N."
+         //<< setw(7) << "id"
+         << setw(20) << "artist_name"
+         << setw(45) << "track_name"
+         << setw(26) << "track_id"
+         << setw(13) << "popularity"
+         << setw(7) << "year"
+         << setw(20) << "genre"
+         /*<< setw(13) << "danceability"
+         << setw(7) << "energy"
+         << setw(4) << "key"
+         << setw(9) << "loudness"
+         << setw(5) << "mode"
+         << setw(12) << "speechiness"
+         << setw(13) << "acousticness"
+         << setw(17) << "instrumentalness"
+         << setw(8) << "liveness"
+         << setw(8) << "valence"
+         << setw(8) << "tempo"*/
+         << setw(13) << "duration_ms"<< "ms"
+         //<< setw(15) << "time_signature"
+         << endl;
+
+    cout << string(145, '-') << endl;
+    int sumar3=0;
     while (actual) {
         if (actual->cancion.artist_name == artista) {
+            cout << setw(4) << sumar3++;
             actual->cancion.mostrar();
             encontrado = true;
         }

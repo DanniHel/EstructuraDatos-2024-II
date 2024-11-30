@@ -139,7 +139,7 @@ void agregarCancionAPlayList(NodoTrie* raiz, TablaHash& tablaHash) {
 
 
 int main() {
-    string nombreArchivo = "spotify_data_mini.csv";
+    string nombreArchivo = "spotify_data.csv";
     TablaHash tablaHash(10);
     NodoTrie* raiz = nullptr;
 
