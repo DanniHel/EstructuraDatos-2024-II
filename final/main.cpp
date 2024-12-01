@@ -132,7 +132,7 @@ void agregarCancionAPlayList(NodoTrie* raiz, TablaHash& tablaHash) {
 
 
 int main() {
-    string nombreArchivo = "spotify_data_mini.csv";
+    string nombreArchivo = "spotify_data.csv";
     TablaHash tablaHash(10);
     NodoTrie* raiz = nullptr;
 
@@ -140,10 +140,18 @@ int main() {
     // Cargar datos desde el archivo CSV para la tabla HASH
     cargarDatosDesdeArchivo(nombreArchivo, tablaHash);
 
-    int cont1 = 0, cont2 = 0;
-    // Procesar el archivo CSV y cargar las canciones en el Trie
-    raiz = procesar_archivo(nombreArchivo, raiz, cont1, cont2);
-    cout << "TRIE: Lineas Procesadas (" << cont1 << ") - lineas omitidas (" << cont2 << ")" << endl;
+    //tiempo de ejecucion de la funcion en nanosegundos
+        auto inicio = chrono::steady_clock::now();
+
+        int cont1 = 0, cont2 = 0;
+        // Procesar el archivo CSV y cargar las canciones en el Trie
+        raiz = procesar_archivo(nombreArchivo, raiz, cont1, cont2);
+
+        auto fin = chrono::steady_clock::now();
+        auto tiempo=chrono::duration_cast<chrono::milliseconds>(fin - inicio).count();
+
+
+    cout << "TRIE: Lineas Procesadas (" << cont1 << ") - lineas omitidas (" << cont2 << ") | tiempo: "<<tiempo<<" milisegundos"<< endl;
 
     // Agregar algunas canciones de ejemplo (opcional)
     Cancionn nuevaCancion;//lista enlazada

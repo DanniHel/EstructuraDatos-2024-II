@@ -10,6 +10,8 @@
 #include <cstdlib>
 #include <vector>
 #include <algorithm>
+#include <chrono>
+
 using namespace std;
 
 // Definir el número de caracteres imprimibles (desde espacio hasta '~')

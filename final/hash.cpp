@@ -51,6 +51,8 @@ void TablaHash::mostrar() {
 
 // Función para leer los datos del archivo CSV y cargar las canciones en la tabla hash
 void cargarDatosDesdeArchivo(string nombreArchivo, TablaHash& tablaHash) {
+    //tiempo de ejecucion de la funcion en nanosegundos
+    auto inicio = chrono::steady_clock::now();
     ifstream archivo(nombreArchivo);
     if (!archivo.is_open()) {
         cerr << "Error al abrir el archivo: " << nombreArchivo << endl;
@@ -165,6 +167,12 @@ void cargarDatosDesdeArchivo(string nombreArchivo, TablaHash& tablaHash) {
         }
     }
 
+
+
+
+    auto fin = chrono::steady_clock::now();
+    auto tiempo=chrono::duration_cast<chrono::milliseconds>(fin - inicio).count();
+
     cout << "HASH: Lineas Procesadas correctamente (" << num2 << ") - ";
-    cout << "Lineas omitidas (" << num1 <<")" << endl;
+    cout << "Lineas omitidas (" << num1 <<") | tiempo: "<<tiempo<<" milisegundos"<< endl;
 }
