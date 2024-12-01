@@ -1,4 +1,3 @@
-// trie.cpp
 #include "trie.h"
 
 // Constructor para inicializar el nodo

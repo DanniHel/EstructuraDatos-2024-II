@@ -32,14 +32,7 @@ void mostrarMenu() {
 
 // Función para cargar canciones desde un archivo CSV
 void cargarCancionesDesdeArchivo(const string& nombreArchivo, TablaHash& tablaHash, NodoTrie*& raiz) {
-    cout << "Procesando archivo| " << nombreArchivo << endl << endl;
-    // Cargar datos desde el archivo CSV para la tabla HASH
-    cargarDatosDesdeArchivo(nombreArchivo, tablaHash);
 
-    int cont1 = 0, cont2 = 0;
-    // Procesar el archivo CSV y cargar las canciones en el Trie
-    raiz = procesar_archivo(nombreArchivo, raiz, cont1, cont2);
-    cout << "TRIE: Lineas Procesadas (" << cont1 << ") - lineas omitidas (" << cont2 << ")" << endl;
 }
 
 // Función para agregar una canción a la PlayList
@@ -139,11 +132,18 @@ void agregarCancionAPlayList(NodoTrie* raiz, TablaHash& tablaHash) {
 
 
 int main() {
-    string nombreArchivo = "spotify_data.csv";
+    string nombreArchivo = "spotify_data_mini.csv";
     TablaHash tablaHash(10);
     NodoTrie* raiz = nullptr;
 
-    cargarCancionesDesdeArchivo(nombreArchivo, tablaHash, raiz);
+    cout << "Procesando archivo| " << nombreArchivo << endl << endl;
+    // Cargar datos desde el archivo CSV para la tabla HASH
+    cargarDatosDesdeArchivo(nombreArchivo, tablaHash);
+
+    int cont1 = 0, cont2 = 0;
+    // Procesar el archivo CSV y cargar las canciones en el Trie
+    raiz = procesar_archivo(nombreArchivo, raiz, cont1, cont2);
+    cout << "TRIE: Lineas Procesadas (" << cont1 << ") - lineas omitidas (" << cont2 << ")" << endl;
 
     // Agregar algunas canciones de ejemplo (opcional)
     Cancionn nuevaCancion;//lista enlazada
@@ -238,33 +238,29 @@ int main() {
                             int criterio, orden;
                             cout<<"Elige una opcion para ordenar"<<endl;
 
-                            cout<<"1. N°"<<endl;
-                            cout<<"2. artist_name"<<endl;
-                            cout<<"3. track_name"<<endl;
-                            cout<<"4. track_id"<<endl;
-                            cout<<"5. popularity"<<endl;
-                            cout<<"6. year"<<endl;
-                            cout<<"7. genre"<<endl;
-                            cout<<"8. danceability"<<endl;
-                            cout<<"9. energy"<<endl;
-                            cout<<"10. key"<<endl;
-                            cout<<"11. loudness"<<endl;
-                            cout<<"12. mode"<<endl;
-                            cout<<"13. speechiness"<<endl;
-                            cout<<"14. acousticness"<<endl;
-                            cout<<"15. instrumentalness"<<endl;
-                            cout<<"16. liveness"<<endl;
-                            cout<<"17. valence"<<endl;
-                            cout<<"18. tempo"<<endl;
-                            cout<<"19. duration_ms"<<endl;
-                            cout<<"20. time_signature"<<endl;
+                            cout << left <<setw(25)<<"1. N."<<setw(25)<<"12. mode"<<endl;
+                            cout << left <<setw(25)<<"2. artist_name"<<setw(25)<<"13. speechiness"<<endl;
+                            cout << left <<setw(25)<<"3. track_name"<<setw(25)<<"14. acousticness"<<endl;
+                            cout << left <<setw(25)<<"4. track_id"<<setw(25)<<"15. instrumentalness"<<endl;
+                            cout << left <<setw(25)<<"5. popularity"<<setw(25)<<"16. liveness"<<endl;
+                            cout << left <<setw(25)<<"6. year"<<setw(25)<<"17. valence"<<endl;
+                            cout << left <<setw(25)<<"7. genre"<<setw(25)<<"18. tempo"<<endl;
+                            cout << left <<setw(25)<<"8. danceability"<<setw(25)<<"19. duration_ms"<<endl;
+                            cout << left <<setw(25)<<"9. energy"<<setw(25)<<"20. time_signature"<<endl;
+                            cout << left <<setw(25)<<"10. key"<<setw(25)<<"21. Aleatorio"<<endl;
+                            cout << left <<setw(25)<<"11. loudness"<<setw(25)<<"22. Mueve una Cancion"<<endl;
+
                             cout<<endl;
                             cout << "--|: ";
                             cin >> criterio;
                             cout<<endl;
-                            cout<<"0. Ascendente, 1. Descendente: ";
-                            cin >> orden;
-                            cout<<endl;
+                            if(criterio!=21 && criterio!=22){
+                                cout<<"0. Ascendente, 1. Descendente: ";
+                                cin >> orden;
+                                cout<<endl;
+                            }else{
+                                orden=0;
+                            }
                             ordenarPorCriterio(criterio, orden);
                             cout<<endl;
                             break;

@@ -165,6 +165,6 @@ void cargarDatosDesdeArchivo(string nombreArchivo, TablaHash& tablaHash) {
         }
     }
 
-    cout << "HASH: Lineas Procesadas (" << num2 << ") - ";
+    cout << "HASH: Lineas Procesadas correctamente (" << num2 << ") - ";
     cout << "Lineas omitidas (" << num1 <<")" << endl;
 }
