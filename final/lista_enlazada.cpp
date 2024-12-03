@@ -239,11 +239,11 @@ void ordenarPorCriterio(int criterio, int orden) {
                     case 19: return a.duration_ms < b.duration_ms;
                     case 20: return a.time_signature < b.time_signature;
                     default:
-                        cout << "Vuelve a ingresar una opción válida ---" << endl;
+                        cout << "Vuelve a ingresar una opcion valida ---" << endl;
                         return false;
                 }
             } else {
-                cout << "Ingresa una opción válida" << endl;
+                cout << "Ingresa una opcion valida" << endl;
                 return false;
             }
         });

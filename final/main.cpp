@@ -24,15 +24,11 @@ void mostrarMenu() {
     cout << "3. Ordenar canciones por criterio\n";
     cout << "4. Buscar cancion por nombre\n";
     cout << "5. Buscar canciones por artista\n";
+    cout << "6. Eliminar por ID\n";
     cout << endl;
     cout << "0. Salir\n";
     cout << endl;
     cout << "Ingrese su opcion: ";
-}
-
-// Función para cargar canciones desde un archivo CSV
-void cargarCancionesDesdeArchivo(const string& nombreArchivo, TablaHash& tablaHash, NodoTrie*& raiz) {
-
 }
 
 // Función para agregar una canción a la PlayList
@@ -132,7 +128,7 @@ void agregarCancionAPlayList(NodoTrie* raiz, TablaHash& tablaHash) {
 
 
 int main() {
-    string nombreArchivo = "spotify_data.csv";
+    string nombreArchivo = "spotify_data_10000.csv";
     TablaHash tablaHash(10);
     NodoTrie* raiz = nullptr;
 
@@ -246,7 +242,7 @@ int main() {
                             int criterio, orden;
                             cout<<"Elige una opcion para ordenar"<<endl;
 
-                            cout << left <<setw(25)<<"1. N."<<setw(25)<<"12. mode"<<endl;
+                            cout << left <<setw(25)<<"1. ID"<<setw(25)<<"12. mode"<<endl;
                             cout << left <<setw(25)<<"2. artist_name"<<setw(25)<<"13. speechiness"<<endl;
                             cout << left <<setw(25)<<"3. track_name"<<setw(25)<<"14. acousticness"<<endl;
                             cout << left <<setw(25)<<"4. track_id"<<setw(25)<<"15. instrumentalness"<<endl;
@@ -263,13 +259,17 @@ int main() {
                             cin >> criterio;
                             cout<<endl;
                             if(criterio!=21 && criterio!=22){
-                                cout<<"0. Ascendente, 1. Descendente: ";
+                                cout<<"Ascendente (0), Descendente (1): ";
                                 cin >> orden;
                                 cout<<endl;
                             }else{
                                 orden=0;
                             }
-                            ordenarPorCriterio(criterio, orden);
+                            if(orden == 0 || orden == 1){
+                                ordenarPorCriterio(criterio, orden);
+                            }else{
+                                cout<<"Vuelva a ingresar una opcion valida"<<endl;
+                            }
                             cout<<endl;
                             break;
                         }
@@ -292,6 +292,12 @@ int main() {
                             buscarPorArtista(artista, hay);
                             if (!hay) cout << "No se encontraron coincidencias.\n";
                             break;
+                        }
+                        case 6:{
+                            int id;
+                            cout<<"ID (numero) que desea eliminar: ";
+                            cin>>id;
+                            eliminarPorID(id);
                         }
                         case 0:
                             cout << "Saliendo al Menu Principal...\n";
